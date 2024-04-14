@@ -6,7 +6,7 @@ using TMPro ;
 
 public class GameManager : MonoBehaviour
 {
-    // جلوگیری از ساخت مجدد 
+    
     #region Singelton 
     private static GameManager _singelton;
     public static GameManager Singelton{
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         TimerTick();
     }
     
-
+    // Calls value of OnEndTimer after passing 1.0 
     void TimerTick(){
         UiManager.Singelton.ShowTimerValue(timer);
 
@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         }
         
     }
+    // Set hand gesture for player (Use Buttons)
     public void SetPlayerHand(HandBTN _value){
 
         //Debug.Log($"{_value.name} has triggerd .");
@@ -79,6 +80,8 @@ public class GameManager : MonoBehaviour
 
         UiManager.Singelton.SetHandFramePos(_value.transform.position);
     }
+
+    // Sets Timer and value of OnEndTimer
     void SetRoundTimer(){
         timer = 5f;
         tickTack = true ;
@@ -89,6 +92,8 @@ public class GameManager : MonoBehaviour
         tickTack = true ;
         OnEndTimer = NextRound ;
     }
+
+    // Prepare Game For Next Round 
     void NextRound(){
         tickTack = false ;
 
@@ -104,18 +109,24 @@ public class GameManager : MonoBehaviour
         playerAnium.Play("HandMove");
         aiAnim.Play("HandMove");
     }
+
+    // Set Ai Hand Gesture And Call UI 
     void RoundTimerEnd(){
         tickTack = false ;
         aiHand = (HandGesture)Random.Range(0,3);
         ShowHands();
         EndRound();
     }
+    
+    // Call UI 
     void ShowHands(){
         UiManager.Singelton.ShowHands(playerHand,aiHand);
 
         playerAnium.SetTrigger("Show");
         aiAnim.SetTrigger("Show");
     }
+
+    // Main patr , Finds who won this round 
     void EndRound(){
         int stat = 2;
         switch (playerHand)
@@ -157,6 +168,8 @@ public class GameManager : MonoBehaviour
         UiManager.Singelton.RoundResult(stat , playerScore , aiScore);
         SetRoundSwitchTimer();
     }
+
+    // Prepers First Round 
     void StartRound(){
 
         playerAnium.Play("HandMove");
@@ -166,6 +179,8 @@ public class GameManager : MonoBehaviour
         SetPlayerHand(handBTNs[0]);
 
     }
+
+    // First Round Settings 
     public void StartGame(){
         StartRound();
         playerScore = 0 ;

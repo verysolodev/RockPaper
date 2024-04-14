@@ -51,10 +51,13 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(winerIcon.activeInHierarchy){
             winerIcon.transform.Rotate(winerIcon.transform.forward * 0.05f);
         }
     }
+
+    // Prepare Game For Next Round
     public void NextRound(){
 
         playerHandUi.sprite = UiManager.Singelton.handsUi[0];
@@ -62,16 +65,24 @@ public class UiManager : MonoBehaviour
 
         winerIcon.SetActive(false);
     }
+
+    // Changes Hand Sprites
     public void ShowHands(HandGesture _playerHand , HandGesture _aiHand){
         playerHandUi.sprite = UiManager.Singelton.handsUi[(int)_playerHand];
         aiHandUi.sprite = UiManager.Singelton.handsUi[(int)_aiHand];
     }
+
+    // Move Black Frame To Selected Hand Button Position
     public void SetHandFramePos(Vector3 _pos){
         selectframe.transform.position = _pos ;
     }
+
+    
     public void ShowTimerValue(float _value){
         timerUi.text = ((int)_value).ToString();
     }
+
+    // Show Who Won And Update Scores
     public void RoundResult(int _stat , int _playerPoint , int _aiPoint){
         SoundManager.Singelton.PlayEndRoundSound();
         if(_stat == 0){
@@ -84,6 +95,7 @@ public class UiManager : MonoBehaviour
         
         playerScore.text = _playerPoint.ToString();
         aiScore.text = _aiPoint.ToString();
+        
         if(GameManager.Singelton.playerScore == winScore)
             PlayerWin();
         if(GameManager.Singelton.aiScore == winScore)
